@@ -7,6 +7,7 @@ import org.springframework.stereotype.Service;
 
 import br.com.gft.nivelamentojpa.entities.User;
 import br.com.gft.nivelamentojpa.repositories.UserRepository;
+import br.com.gft.nivelamentojpa.services.exceptions.ResourceNotFoundException;
 
 @Service
 public class UserService {
@@ -19,7 +20,7 @@ public class UserService {
 	}
 	
 	public User findById(Integer id) {
-		return ur.findById(id).get();
+		return ur.findById(id).orElseThrow(() -> new ResourceNotFoundException(id));
 	}
 	
 	public User insert(User obj) {
