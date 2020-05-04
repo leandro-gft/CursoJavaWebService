@@ -26,4 +26,8 @@ public class UserService {
 		return ur.save(obj);
 	}
 	
+	public void delete(Integer id) {
+		ur.deleteById(id);
+	}
+	
 }
