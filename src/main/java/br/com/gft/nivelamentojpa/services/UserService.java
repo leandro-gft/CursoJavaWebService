@@ -1,12 +1,16 @@
 package br.com.gft.nivelamentojpa.services;
 
+import java.sql.SQLIntegrityConstraintViolationException;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.dao.DataIntegrityViolationException;
+import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.stereotype.Service;
 
 import br.com.gft.nivelamentojpa.entities.User;
 import br.com.gft.nivelamentojpa.repositories.UserRepository;
+import br.com.gft.nivelamentojpa.services.exceptions.DatabaseException;
 import br.com.gft.nivelamentojpa.services.exceptions.ResourceNotFoundException;
 
 @Service
@@ -28,7 +32,15 @@ public class UserService {
 	}
 	
 	public void delete(Integer id) {
-		ur.deleteById(id);
+		try{
+			ur.deleteById(id);
+		}
+		catch(EmptyResultDataAccessException e) {
+			throw new ResourceNotFoundException(id);
+		}
+		catch(DataIntegrityViolationException e) {
+			throw new DatabaseException(e.getMessage());
+		}
 	}
 	
 	public User update(Integer id, User obj) {
