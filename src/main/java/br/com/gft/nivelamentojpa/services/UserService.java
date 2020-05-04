@@ -21,4 +21,9 @@ public class UserService {
 	public User findById(Integer id) {
 		return ur.findById(id).get();
 	}
+	
+	public User insert(User obj) {
+		return ur.save(obj);
+	}
+	
 }
