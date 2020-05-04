@@ -1,7 +1,8 @@
 package br.com.gft.nivelamentojpa.services;
 
-import java.sql.SQLIntegrityConstraintViolationException;
 import java.util.List;
+
+import javax.persistence.EntityNotFoundException;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataIntegrityViolationException;
@@ -44,9 +45,14 @@ public class UserService {
 	}
 	
 	public User update(Integer id, User obj) {
+		try {
 		User entity = ur.getOne(id);
 		updateData(entity, obj);
 		return ur.save(entity);
+		} 
+		catch (EntityNotFoundException e) {
+			throw new ResourceNotFoundException(id);
+		}
 	}
 
 	private void updateData(User entity, User obj) {
